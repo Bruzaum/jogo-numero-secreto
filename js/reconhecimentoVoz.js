@@ -57,6 +57,6 @@ function atualizaIntervaloNaTela(chute) {
     const menor = parseInt(el_menor.innerHTML)
     const maior = parseInt(el_maior.innerHTML)
 
-    if (chute < numeroSecreto && chute > menor) el_menor.innerHTML = +chute
-    if (chute > numeroSecreto && chute < maior) el_maior.innerHTML = +chute
+    if (chute < numeroSecreto && chute > menor) el_menor.innerHTML = +chute +1
+    if (chute > numeroSecreto && chute < maior) el_maior.innerHTML = +chute -1
 }
