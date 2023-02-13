@@ -1,45 +1,62 @@
-const elementoChute = document.getElementById('chute')
+const el_chute = document.getElementById('chute')
+const el_menor = document.getElementById('menor-valor')
+const el_maior = document.getElementById('maior-valor')
+let recognition
 
-window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+window.onload = function() {
+    window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition
 
-const recognition = new SpeechRecognition();
-recognition.lang = 'pt-Br'
-recognition.start()
-
-recognition.addEventListener('result', onSpeak)
+    recognition = new SpeechRecognition()
+    recognition.lang = 'pt-Br'
+    recognition.start()
+    recognition.addEventListener('result', onSpeak)
+    recognition.addEventListener('end', () => recognition.start())
+}
 
 function onSpeak(e) {
-    chute = e.results[0][0].transcript
-
-    if (chute === "um") {
-        chute = 1
-    } else if (chute === "dois") {
-        chute = 2
-    } else if (chute === "três") {
-        chute = 3
-    } else if (chute === "quatro") {
-        chute = 4
-    } else if (chute === "cinco") {
-        chute = 5
-    } else if (chute === "seis") {
-        chute = 6
-    } else if (chute === "sete") {
-        chute = 7
-    } else if (chute === "oito") {
-        chute = 8
-    } else if (chute === "nove") {
-        chute = 9
-    }
+    const input = e.results[0][0].transcript
+    const chute = normalizeInput(input)
 
     exibeChuteNaTela(chute)
-    verificaChute(chute)
+    const valido = verificaChute(chute)
+    if (valido) atualizaIntervaloNaTela(chute)
 }
 
 function exibeChuteNaTela(chute) {
-    elementoChute.innerHTML = `
+    el_chute.innerHTML = `
         <div>Você disse</div>
         <span class="box">${chute}</span>
      `
-} 
+}
 
-recognition.addEventListener('end', () => recognition.start())
+function normalizeInput(input) {
+    const units = {
+        "um": 1,
+        "dois": 2,
+        "três": 3,
+        "quatro": 4,
+        "cinco": 5,
+        "seis": 6,
+        "sete": 7,
+        "oito": 8,
+        "nove": 9 
+    }
+    
+    let chute = removeLastChar(input)
+    const getunit = units[chute.toLowerCase()]
+    if (getunit) chute = getunit
+
+    return chute
+}
+
+function removeLastChar(string) {
+    return string.substring(0, string.length-1)
+}
+
+function atualizaIntervaloNaTela(chute) {
+    const menor = parseInt(el_menor.innerHTML)
+    const maior = parseInt(el_maior.innerHTML)
+
+    if (chute < numeroSecreto && chute > menor) el_menor.innerHTML = +chute +1
+    if (chute > numeroSecreto && chute < maior) el_maior.innerHTML = +chute -1
+}

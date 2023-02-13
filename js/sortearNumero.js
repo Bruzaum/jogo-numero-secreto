@@ -3,15 +3,14 @@ const maiorValor = 1000
 
 const numeroSecreto = gerarNumeroAleatorio()
 
-
 function gerarNumeroAleatorio() {
     const random = Math.random() * maiorValor + 1
     console.log(parseInt(random))
     return parseInt(random)
 }
 
-const elementoMenorValor = document.getElementById('menor-valor')
-elementoMenorValor.innerHTML = menorValor
+const e_menor = document.getElementById('menor-valor')
+e_menor.innerHTML = menorValor
 
-const elementoMaiorValor = document.getElementById('maior-valor')
-elementoMaiorValor.innerHTML = maiorValor
+const e_maior = document.getElementById('maior-valor')
+e_maior.innerHTML = maiorValor
